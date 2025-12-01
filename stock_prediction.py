@@ -434,11 +434,10 @@ def plot_markowitz_frontier(log_return_mean, sigma):
 def main():
     
     stock_symbol = ['AAPL']
-    
-    #for stock in stock_symbol_list:
-    #y_prediction = stock_prediction(stock_symbol)
+    stock_symbol_list=['IBM', 'SPOT', 'AMZN', 'META', 'INTC']
+    for stock in stock_symbol_list:
+        y_prediction = stock_prediction(stock_symbol)
 
-    #stock_symbol_list=['IBM', 'SPOT', 'AMZN', 'META', 'INTC']
     Markowitz()
     #print("optimal wegths:", M)
 
