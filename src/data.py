@@ -41,8 +41,22 @@ def create_train_test_set(X, y, train_ratio, only_X_test=False):
 
     return X_train, y_train, X_test, y_test
 
-def create_dataloader(X, y, batch_size, shuffle=False):
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+
+def create_dataloader(X, y, batch_size, shuffle=False, seed=42):
     X_tensor = torch.tensor(X, dtype=torch.float32)
     y_tensor = torch.tensor(y, dtype=torch.float32)
     ds = TensorDataset(X_tensor, y_tensor)
-    return DataLoader(ds, batch_size=batch_size, shuffle=shuffle)
+    
+    g = torch.Generator()
+    g.manual_seed(seed)
+    
+    return DataLoader(
+        ds, 
+        batch_size=batch_size, 
+        shuffle=shuffle, 
+        pin_memory=torch.cuda.is_available(), 
+        num_workers=0
+    )

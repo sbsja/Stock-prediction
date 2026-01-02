@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass(frozen=True)
 class Config:
@@ -20,7 +20,13 @@ class Config:
 
     # model
     channels: int = 5
+    model_name: str = "cnn_lstm"
+    model_kwargs: dict = field(default_factory=dict)
 
     # paths
     artifacts_dir: str = "artifacts"
     weights_name: str = "model_weights.pth"
+
+    # reproducibility
+    seed: int = 42
+    deterministic: bool = True

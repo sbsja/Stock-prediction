@@ -1,7 +1,35 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+
+# Virtual environments
 .venv/
+venv/
+ENV/
+
+# PyTorch / training artifacts
 artifacts/
-model_weights.pth
-.ipynb_checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Data / downloads
+*.csv
+*.npy
+*.npz
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log

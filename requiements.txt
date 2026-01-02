@@ -1,6 +1,14 @@
+# Core
 numpy
 pandas
-yfinance
-scikit-learn
 matplotlib
+scikit-learn
+
+# Finance data
+yfinance
+
+# PyTorch (GPU-enabled if installed with CUDA)
 torch
+
+# Optional but recommended
+tqdm
