@@ -31,6 +31,7 @@ The code automatically uses **GPU (CUDA)** if available, otherwise falls back to
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+```
 
 
 ## Requirements
@@ -53,20 +54,27 @@ pip install -r requirements.txt
 All scripts must be run from the project root directory
 
 ### Train CNN + LSTM (default)
+```bash
 python scripts/train_aapl.py
+```
 or explicitly:
+```bash
 python scripts/train_aapl.py --model cnn_lstm
+```
 
 ### Train Transformer
+```bash
 python scripts/train_aapl.py --model transformer
+```
 With custom Transformer hyperparameters:
+```bash
 python scripts/train_aapl.py \
 - model transformer \
 - d_model 128 \
 - nhead 4 \
 - num_layers 3 \
 - dim_feedforward 256
-
+```
 ### During training
 
 - AAPL stock data is downloaded using yfinance
