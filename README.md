@@ -42,13 +42,16 @@ The code automatically uses **GPU (CUDA)** if available, otherwise falls back to
 ## Installation
 
 ### 1. Create and activate a virtual environment
+```bash
 python -m venv .venv
 source .venv/bin/activate        # macOS / Linux
 .venv\Scripts\activate         # Windows
+```
 
 ### 2. Install dependencies
+```bash
 pip install -r requirements.txt
-
+```
 
 ## Training a Model
 All scripts must be run from the project root directory
@@ -69,12 +72,13 @@ python scripts/train_aapl.py --model transformer
 With custom Transformer hyperparameters:
 ```bash
 python scripts/train_aapl.py \
-- model transformer \
-- d_model 128 \
-- nhead 4 \
-- num_layers 3 \
-- dim_feedforward 256
+  --model transformer \
+  --d_model 128 \
+  --nhead 4 \
+  --num_layers 3 \
+  --dim_feedforward 256
 ```
+
 ### During training
 
 - AAPL stock data is downloaded using yfinance
@@ -82,22 +86,27 @@ python scripts/train_aapl.py \
 - Sliding windows of length seq_length are created
 - The selected model is trained with early stopping
 - Best model weights are saved to:
+```text
 artifacts/
   cnn_lstm_model_weights.pth
   transformer_model_weights.pth
+```
 
 ## Evaluating a Model
 Evaluation must match the model type that was trained.
 
 ### Evaluate CNN + LSTM
+```bash
 python scripts/eval_aapl.py --model cnn_lstm
+```
 
 ### Evaluate Transformer
+```bash
 python scripts/eval_aapl.py --model transformer
+```
 
 ### Evaluation output
 - MAE (Mean Absolute Error)
 - RMSE (Root Mean Squared Error)
 - R² score
 - Plot of actual vs predicted normalized closing price
-
