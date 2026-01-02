@@ -1,6 +1,6 @@
 # Stock Price Prediction with CNN+LSTM and Transformer
 
-This project trains deep learning models to predict the next-day **normalized closing price** of a stock using historical time-series data.
+This project trains deep learning models to predict the **next day closing price** (normalized using Min–Max scaling per feature) of a stock using historical time-series data.
 
 Two model architectures are supported:
 - **CNN + LSTM**
@@ -8,7 +8,17 @@ Two model architectures are supported:
 
 The code automatically uses **GPU (CUDA)** if available, otherwise falls back to CPU.
 
----
+## Quick Start
+
+```bash
+git clone <repo-url>
+cd Stock-prediction
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
+python scripts/train_aapl.py --model transformer
+python scripts/eval_aapl.py --model transformer
+```
 
 ## Project Structure
 
@@ -32,6 +42,18 @@ The code automatically uses **GPU (CUDA)** if available, otherwise falls back to
 ├── .gitignore
 └── README.md
 ```
+
+## Models
+
+### CNN + LSTM
+- CNN extracts local temporal patterns
+- LSTM models long-term dependencies
+- Strong baseline for time-series prediction
+
+### Transformer
+- Uses self-attention to model temporal relationships
+- Parallelizable and scalable
+- Better suited for longer sequences
 
 
 ## Requirements
@@ -110,3 +132,12 @@ python scripts/eval_aapl.py --model transformer
 - RMSE (Root Mean Squared Error)
 - R² score
 - Plot of actual vs predicted normalized closing price
+
+
+## Reproducibility
+
+- Fixed random seeds for Python, NumPy, and PyTorch
+- Optional deterministic CUDA execution
+- Cached data downloads to avoid data drift
+- Model checkpoints store configuration metadata
+
