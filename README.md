@@ -12,6 +12,7 @@ The code automatically uses **GPU (CUDA)** if available, otherwise falls back to
 
 ## Project Structure
 
+```text
 .
 ├── src/
 │   ├── config.py          # Global configuration
