@@ -30,3 +30,4 @@ class Config:
     # reproducibility
     seed: int = 42
     deterministic: bool = True
+    auto_adjust_data: bool = False

@@ -16,8 +16,8 @@ cd Stock-prediction
 python -m venv .venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
-python scripts/train_aapl.py --model transformer
-python scripts/eval_aapl.py --model transformer
+python scripts/train_supervised.py --model transformer
+python scripts/eval_supervised.py --model transformer
 ```
 
 ## Project Structure
@@ -25,19 +25,45 @@ python scripts/eval_aapl.py --model transformer
 ```text
 .
 ├── src/
-│   ├── config.py          # Global configuration
-│   ├── data.py            # Data loading & preprocessing
-│   ├── train.py           # Training loop (model-agnostic)
-│   ├── eval.py            # Evaluation utilities
-│   └── models/
-│       ├── cnn_lstm.py
-│       ├── transformer.py
-│       ├── factory.py     # Model selector
-│       └── __init__.py
+│   ├── config.py              # Global configuration
+│   ├── data.py                # Data loading & preprocessing
+│   ├── train.py               # Supervised training loop
+│   ├── eval.py                # Supervised evaluation
+│   │
+│   ├── models/                # Price prediction models
+│   │   ├── cnn_lstm.py
+│   │   ├── transformer.py
+│   │   ├── factory.py
+│   │   └── __init__.py
+│   │
+│   ├── rl/                    # Reinforcement learning 
+│   │   ├── env.py             # Trading environment (Gym-style)
+│   │   ├── agent.py           # RL agent
+│   │   ├── reward.py          # Reward functions
+│   │   ├── train.py           # RL training loop
+│   │   ├── eval.py            # RL evaluation / backtesting
+│   │   └── __init__.py
+│   │
+│   ├── utils/
+│   │   ├── repro.py           # Reproducibility utilities
+│   │   ├── metrics.py         # Shared metrics
+│   │   └── plotting.py        # Shared plots
+│
 ├── scripts/
-│   ├── train_aapl.py      # Train on AAPL
-│   └── eval_aapl.py       # Evaluate on AAPL
-├── artifacts/             # Saved model weights (ignored by git)
+│   ├── train_supervised.py          # Train supervised model
+│   ├── eval_supervised.py           # Evaluate supervised model
+│   │
+│   ├── train_rl.py            # Train RL trading agent 
+│   └── eval_rl.py             # Evaluate RL agent 
+│
+├── artifacts/
+│   ├── supervised/            # CNN/Transformer weights
+│   └── rl/                    # RL checkpoints & logs
+│
+├── data/
+│   ├── cache/                 # Cached stock data
+│   └── processed/             # Optional feature sets
+│
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -80,20 +106,20 @@ All scripts must be run from the project root directory
 
 ### Train CNN + LSTM (default)
 ```bash
-python scripts/train_aapl.py
+python scripts/train_supervised.py
 ```
 or explicitly:
 ```bash
-python scripts/train_aapl.py --model cnn_lstm
+python scripts/train_supervised.py --model cnn_lstm
 ```
 
 ### Train Transformer
 ```bash
-python scripts/train_aapl.py --model transformer
+python scripts/train_supervised.py --model transformer
 ```
 With custom Transformer hyperparameters:
 ```bash
-python scripts/train_aapl.py \
+python scripts/train_supervised.py \
   --model transformer \
   --d_model 128 \
   --nhead 4 \
@@ -119,12 +145,12 @@ Evaluation must match the model type that was trained.
 
 ### Evaluate CNN + LSTM
 ```bash
-python scripts/eval_aapl.py --model cnn_lstm
+python scripts/eval_supervised.py --model cnn_lstm
 ```
 
 ### Evaluate Transformer
 ```bash
-python scripts/eval_aapl.py --model transformer
+python scripts/eval_supervised.py --model transformer
 ```
 
 ### Evaluation output

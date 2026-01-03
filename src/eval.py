@@ -44,6 +44,37 @@ def load_model(cfg, device, weights_path=None):
     return model
 
 
+def direction_accuracy(y_true, y_pred):
+    """
+    Computes direction accuracy for next-day predictions.
+
+    Correct if:
+      sign(y_pred[t] - y_true[t-1]) == sign(y_true[t] - y_true[t-1])
+
+    Returns:
+      float in [0, 1]
+    """
+    y_true = np.asarray(y_true).reshape(-1)
+    y_pred = np.asarray(y_pred).reshape(-1)
+
+    if len(y_true) < 2:
+        return float("nan")
+
+    prev_true = y_true[:-1]
+    true_next = y_true[1:]
+    pred_next = y_pred[1:]
+
+    true_dir = np.sign(true_next - prev_true)
+    pred_dir = np.sign(pred_next - prev_true)
+
+    # Ignore flat days (true_dir == 0)
+    mask = true_dir != 0
+    if mask.sum() == 0:
+        return float("nan")
+
+    return float((true_dir[mask] == pred_dir[mask]).mean())
+
+
 @torch.no_grad()
 def predict(model, X):
     X = torch.tensor(X, dtype=torch.float32, device=next(model.parameters()).device)
@@ -56,7 +87,8 @@ def evaluate(y_true, y_pred):
     mse = mean_squared_error(y_true, y_pred)
     rmse = float(np.sqrt(mse))
     r2 = r2_score(y_true, y_pred)
-    return {"MAE": mae, "RMSE": rmse, "R2": r2}
+    acc = direction_accuracy(y_true, y_pred)
+    return {"MAE": mae, "RMSE": rmse, "R2": r2, "Direction Accuracy": acc}
 
 
 def plot_prediction(y_true, y_pred):

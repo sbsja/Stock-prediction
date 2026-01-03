@@ -4,8 +4,8 @@ from sklearn.preprocessing import MinMaxScaler
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 
-def load_process_data(stock_symbol, start_date, end_date, seq_length, feature_columns, channels):
-    data = yf.download(stock_symbol, start=start_date, end=end_date)
+def load_process_data(stock_symbol, start_date, end_date, auto_adjust_data, seq_length, feature_columns, channels):
+    data = yf.download(stock_symbol, start=start_date, end=end_date, auto_adjust=auto_adjust_data)
     data = data[list(feature_columns)]
     data = np.array(data)
 
@@ -57,6 +57,7 @@ def create_dataloader(X, y, batch_size, shuffle=False, seed=42):
         ds, 
         batch_size=batch_size, 
         shuffle=shuffle, 
+        generator=g,
         pin_memory=torch.cuda.is_available(), 
         num_workers=0
     )
